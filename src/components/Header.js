@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { clear } from '../store/store';
 import headerStyle from './header.module.css';
