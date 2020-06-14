@@ -4,22 +4,38 @@ import { colorize } from '../store/store';
 class Grid extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      paint: false,
+    };
+
+    this.handleMousrover = this.handleMousrover.bind(this);
   }
 
+  handleMousrover(row, col) {
+    if (this.state.paint) {
+      this.props.paint(row, col);
+    }
+  }
   render() {
     const { grid } = this.props;
     return (
       <div id='pixelate'>
         {/* truncated for brevity... */}
-        <table>
+        <table
+          onMouseDown={() => this.setState({ paint: true })}
+          onMouseUp={() => this.setState({ paint: false })}
+        >
           <tbody>
             {grid.map((row, rowIndex) => (
               <tr key={rowIndex}>
                 {row.map((color, cellIndex) => (
                   <td
                     key={cellIndex}
+                    onMouseOver={() =>
+                      this.handleMousrover(rowIndex, cellIndex)
+                    }
                     onClick={() => this.props.paint(rowIndex, cellIndex)}
+                    className={grid[rowIndex][cellIndex]}
                   ></td>
                 ))}
               </tr>
@@ -37,7 +53,7 @@ const mapState = (state) => {
 };
 const mapDispatch = (dispatch) => {
   return {
-    paint: (row, col) => dispatch(colorize()),
+    paint: (row, col) => dispatch(colorize(row, col)),
   };
 };
 export default connect(mapState, mapDispatch)(Grid);
