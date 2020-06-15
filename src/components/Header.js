@@ -4,7 +4,7 @@ import { clear, colorize, paintPath } from '../store/store';
 import { bfs } from './BFS';
 import { sleep } from './ult';
 import headerStyle from './header.module.css';
-
+import selectStyle from './selectMenu.module.css';
 class Header extends React.Component {
   search = async (grid, start) => {
     let ans = await bfs(grid, start, this.props.paint);
@@ -32,8 +32,16 @@ class Header extends React.Component {
     return (
       <div className={headerStyle.header}>
         <h3>PathFinding Visualizer</h3>
-        <button onClick={this.props.clear}>Clear</button>
-        <button onClick={() => this.search(grid, start)}>BFS Start</button>
+
+        <div className={headerStyle.button} onClick={this.props.clear}>
+          <a href='#'>Clear</a>
+        </div>
+        <div
+          className={headerStyle.button}
+          onClick={() => this.search(grid, start)}
+        >
+          <a href='#'>Start</a>
+        </div>
       </div>
     );
   }
