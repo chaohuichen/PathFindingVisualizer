@@ -1,8 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import loggerMiddleware from 'redux-logger';
 import girdStyle from './Grid.module.css';
-import Grid from '../components/Grid';
-import { act } from 'react-dom/test-utils';
 
 let gird = new Array(20).fill([]);
 for (let i = 0; i < gird.length; ++i) {

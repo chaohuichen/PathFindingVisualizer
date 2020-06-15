@@ -2,12 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { colorize, paintPath } from '../store/store';
 import { bfs } from './BFS';
+import { sleep } from './ult';
 
-const sleep = (milliseconds) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, milliseconds);
-  });
-};
 class Grid extends Component {
   constructor() {
     super();
