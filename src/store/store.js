@@ -21,24 +21,35 @@ const COLORIZE = 'COLORIZE';
 const CLEAR = 'CLEAR';
 const SET_START = 'SET_START';
 const PAINT_PATH = 'PAINT_PATH';
+const DRAW_WALL = 'DRAW_WALL';
 //action creator
 export const colorize = (row, column) => ({ type: COLORIZE, row, column });
+export const drawWall = (row, column) => ({ type: DRAW_WALL, row, column });
 export const clear = () => ({ type: CLEAR });
 export const setStart = (start) => ({ type: SET_START, start });
 export const paintPath = (row, column) => ({ type: PAINT_PATH, row, column });
 //reducer
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case DRAW_WALL:
+      const wallGrid = [...state.grid];
+      wallGrid[action.row] = [...wallGrid[action.row]];
+      wallGrid[action.row][action.column] = {
+        ...wallGrid[action.row][action.column],
+      };
+      if (wallGrid[action.row][action.column].color === '') {
+        wallGrid[action.row][action.column].state = 'Visited';
+        wallGrid[action.row][action.column].color = girdStyle.wall;
+      }
+      return { ...state, grid: wallGrid };
     case COLORIZE:
       const newGrid = [...state.grid];
-
       newGrid[action.row] = [...newGrid[action.row]];
-
       newGrid[action.row][action.column] = {
         ...newGrid[action.row][action.column],
       };
       if (newGrid[action.row][action.column].color === '') {
-        newGrid[action.row][action.column].state = 'Visited';
+        newGrid[action.row][action.column].state = 'Blocked';
         newGrid[action.row][action.column].color = girdStyle.element;
       }
       return { ...state, grid: newGrid };
@@ -52,7 +63,7 @@ function reducer(state = initialState, action) {
       pathGrid[action.row][action.column] = {
         ...pathGrid[action.row][action.column],
       };
-      pathGrid[action.row][action.column].color = 'red';
+      pathGrid[action.row][action.column].color = girdStyle.red;
       return { ...state, grid: pathGrid };
     default:
       return state;

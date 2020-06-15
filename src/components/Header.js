@@ -23,7 +23,7 @@ class Header extends React.Component {
       startrow += dr[0];
       startcol += dr[1];
       this.props.paintPath(startrow, startcol);
-      await sleep(100);
+      await sleep(20);
     }
     // console.log(this.props.grid);
   };

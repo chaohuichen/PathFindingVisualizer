@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { colorize, paintPath } from '../store/store';
+import { colorize, paintPath, drawWall } from '../store/store';
 
 class Grid extends Component {
   constructor() {
@@ -14,7 +14,7 @@ class Grid extends Component {
 
   handleMousrover(row, col) {
     if (this.state.paint) {
-      this.props.paint(row, col);
+      this.props.drawWall(row, col);
     }
   }
 
@@ -39,7 +39,7 @@ class Grid extends Component {
                       this.handleMousrover(rowIndex, cellIndex)
                     }
                     onClick={() => {
-                      this.props.paint(rowIndex, cellIndex);
+                      this.props.drawWall(rowIndex, cellIndex);
                     }}
                     className={grid[rowIndex][cellIndex].color}
                   ></td>
@@ -63,6 +63,7 @@ const mapDispatch = (dispatch) => {
   return {
     paint: (row, col) => dispatch(colorize(row, col)),
     paintPath: (row, col) => dispatch(paintPath(row, col)),
+    drawWall: (row, col) => dispatch(drawWall(row, col)),
   };
 };
 export default connect(mapState, mapDispatch)(Grid);
