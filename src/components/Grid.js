@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { colorize } from '../store/store';
+import { colorize, paintPath } from '../store/store';
 import { bfs } from './BFS';
+
+const sleep = (milliseconds) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, milliseconds);
+  });
+};
 class Grid extends Component {
   constructor() {
     super();
@@ -17,15 +23,37 @@ class Grid extends Component {
       this.props.paint(row, col);
     }
   }
+  search = async (grid, start) => {
+    let ans = await bfs(grid, start, this.props.paint);
+    //north,south west    east
+    let direction = {
+      North: [-1, 0],
+      South: [1, 0],
+      West: [0, -1],
+      East: [0, 1],
+    };
+
+    let startrow = start[0];
+    let startcol = start[1];
+    for (let i = 0; i < ans.length; ++i) {
+      let dr = direction[ans[i]];
+      startrow += dr[0];
+      startcol += dr[1];
+      this.props.paintPath(startrow, startcol);
+      await sleep(100);
+    }
+    // console.log(this.props.grid);
+  };
   render() {
     const { grid, start, end } = this.props;
 
     return (
       <div id='pixelate'>
         {/* truncated for brevity... */}
+        {/* bfs(grid, start, end, this.props.paint) */}
         <button
           style={{ width: 50, height: 50 }}
-          onClick={() => bfs(grid, start, end, this.props.paint)}
+          onClick={() => this.search(grid, start)}
         >
           Start
         </button>
@@ -66,6 +94,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     paint: (row, col) => dispatch(colorize(row, col)),
+    paintPath: (row, col) => dispatch(paintPath(row, col)),
   };
 };
 export default connect(mapState, mapDispatch)(Grid);
