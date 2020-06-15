@@ -18,13 +18,14 @@ class Grid extends Component {
     }
   }
   render() {
-    const { grid } = this.props;
+    const { grid, start, end } = this.props;
+
     return (
       <div id='pixelate'>
         {/* truncated for brevity... */}
         <button
           style={{ width: 50, height: 50 }}
-          onClick={() => bfs(grid, this.props.paint)}
+          onClick={() => bfs(grid, start, end, this.props.paint)}
         >
           Start
         </button>
@@ -44,7 +45,7 @@ class Grid extends Component {
                     onClick={() => {
                       this.props.paint(rowIndex, cellIndex);
                     }}
-                    className={grid[rowIndex][cellIndex]}
+                    className={grid[rowIndex][cellIndex].color}
                   ></td>
                 ))}
               </tr>
@@ -58,6 +59,8 @@ class Grid extends Component {
 const mapState = (state) => {
   return {
     grid: state.grid,
+    start: state.start,
+    end: state.end,
   };
 };
 const mapDispatch = (dispatch) => {
