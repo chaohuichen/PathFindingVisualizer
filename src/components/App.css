@@ -4,7 +4,7 @@
 }
 
 html {
-  background-color: #222;
+  background-color: lightgray;
   color: white;
 }
 
@@ -17,7 +17,7 @@ body {
 td {
   height: 25px;
   width: 25px;
-  background-color: lightgray;
+  background-color: white;
   transition: background-color 0.5s ease;
 }
 
