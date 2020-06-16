@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { colorize, paintPath, drawWall } from '../store/store';
+import { colorize, paintPath, drawWall, setStart } from '../store/store';
 
 class Grid extends Component {
   constructor() {
     super();
     this.state = {
       paint: false,
+      moveStart: false,
     };
 
     this.handleMousrover = this.handleMousrover.bind(this);
   }
 
-  handleMousrover(row, col) {
-    if (this.state.paint) {
+  async handleMousrover(row, col) {
+    if (this.state.moveStart) {
+      console.log('hello');
+      await this.props.setStart(row, col);
+    } else if (this.state.paint) {
       this.props.drawWall(row, col);
     }
   }
@@ -38,6 +42,16 @@ class Grid extends Component {
                     onMouseOver={() =>
                       this.handleMousrover(rowIndex, cellIndex)
                     }
+                    onMouseUp={() => {
+                      if (grid[rowIndex][cellIndex].state === 'start') {
+                        this.setState({ moveStart: false });
+                      }
+                    }}
+                    onMouseDown={() => {
+                      if (grid[rowIndex][cellIndex].state === 'start') {
+                        this.setState({ moveStart: true });
+                      }
+                    }}
                     onClick={() => {
                       this.props.drawWall(rowIndex, cellIndex);
                     }}
@@ -64,6 +78,7 @@ const mapDispatch = (dispatch) => {
     paint: (row, col) => dispatch(colorize(row, col)),
     paintPath: (row, col) => dispatch(paintPath(row, col)),
     drawWall: (row, col) => dispatch(drawWall(row, col)),
+    setStart: (row, col) => dispatch(setStart(row, col)),
   };
 };
 export default connect(mapState, mapDispatch)(Grid);
