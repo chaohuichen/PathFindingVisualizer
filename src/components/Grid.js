@@ -7,6 +7,7 @@ import {
   setStart,
   setEnd,
 } from '../store/store';
+import 'font-awesome/css/font-awesome.min.css';
 
 class Grid extends Component {
   constructor() {
@@ -74,7 +75,16 @@ class Grid extends Component {
                       this.props.drawWall(rowIndex, cellIndex);
                     }}
                     className={grid[rowIndex][cellIndex].color}
-                  ></td>
+                  >
+                    <i
+                      className={
+                        grid[rowIndex][cellIndex].state === 'Goal'
+                          ? 'fas fa-bullseye'
+                          : null
+                      }
+                      style={{ marginLeft: '3px', color: 'blue' }}
+                    ></i>
+                  </td>
                 ))}
               </tr>
             ))}

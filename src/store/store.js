@@ -5,9 +5,12 @@ import girdStyle from './Grid.module.css';
 let gird = new Array(20).fill([]);
 for (let i = 0; i < gird.length; ++i) {
   gird[i] = new Array(40).fill({ state: 'Empty', color: '' });
+  if (i === 11) {
+    gird[10][10] = { state: 'start', color: girdStyle.red };
+    gird[10][39] = { state: 'Goal', color: girdStyle.red };
+  }
 }
-gird[10][10] = { state: 'start', color: girdStyle.red };
-gird[10][39] = { state: 'Goal', color: girdStyle.red };
+
 // gird[10][10] = { state: 1, color: girdStyle.red };
 const initialState = {
   grid: gird,
@@ -18,6 +21,8 @@ const initialState = {
   prevEndCellState: 'Empty',
   prevEndCellColor: '',
 };
+// gird[10][10] = { state: 'start', color: girdStyle.red };
+// gird[10][39] = { state: 'Goal', color: girdStyle.red };
 // const initialState = { grid: Array(20).fill(Array(80).fill('')) };
 
 //action type
@@ -35,6 +40,7 @@ export const clear = () => ({ type: CLEAR });
 export const setStart = (row, column) => ({ type: SET_START, row, column });
 export const setEnd = (row, column) => ({ type: SET_END, row, column });
 export const paintPath = (row, column) => ({ type: PAINT_PATH, row, column });
+
 //reducer
 function reducer(state = initialState, action) {
   switch (action.type) {
@@ -45,7 +51,7 @@ function reducer(state = initialState, action) {
         ...wallGrid[action.row][action.column],
       };
       if (wallGrid[action.row][action.column].color === '') {
-        wallGrid[action.row][action.column].state = 'Visited';
+        wallGrid[action.row][action.column].state = 'Blocked';
         wallGrid[action.row][action.column].color = girdStyle.wall;
       }
       return { ...state, grid: wallGrid };
@@ -56,11 +62,12 @@ function reducer(state = initialState, action) {
         ...newGrid[action.row][action.column],
       };
       if (newGrid[action.row][action.column].color === '') {
-        newGrid[action.row][action.column].state = 'Blocked';
+        newGrid[action.row][action.column].state = 'Visited';
         newGrid[action.row][action.column].color = girdStyle.element;
       }
       return { ...state, grid: newGrid };
     case CLEAR:
+      // const initialGrid=[...initialSt]
       return initialState;
     case SET_START:
       const moveGrid = [...state.grid];
