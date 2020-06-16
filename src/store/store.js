@@ -6,8 +6,8 @@ let gird = new Array(20).fill([]);
 for (let i = 0; i < gird.length; ++i) {
   gird[i] = new Array(40).fill({ state: 'Empty', color: '' });
   if (i === 11) {
-    gird[10][10] = { state: 'start', color: girdStyle.red };
-    gird[10][39] = { state: 'Goal', color: girdStyle.red };
+    gird[10][10] = { state: 'start', icon: 'fas fa-sun' };
+    gird[10][39] = { state: 'Goal', icon: 'fas fa-bullseye' };
   }
 }
 
@@ -50,7 +50,10 @@ function reducer(state = initialState, action) {
       wallGrid[action.row][action.column] = {
         ...wallGrid[action.row][action.column],
       };
-      if (wallGrid[action.row][action.column].color === '') {
+      if (
+        wallGrid[action.row][action.column].state !== 'Goal' &&
+        wallGrid[action.row][action.column].state !== 'start'
+      ) {
         wallGrid[action.row][action.column].state = 'Blocked';
         wallGrid[action.row][action.column].color = girdStyle.wall;
       }
@@ -67,7 +70,6 @@ function reducer(state = initialState, action) {
       }
       return { ...state, grid: newGrid };
     case CLEAR:
-      // const initialGrid=[...initialSt]
       return initialState;
     case SET_START:
       const moveGrid = [...state.grid];
@@ -78,6 +80,7 @@ function reducer(state = initialState, action) {
       };
       moveGrid[state.start[0]][state.start[1]].state = state.prevStartCellState;
       moveGrid[state.start[0]][state.start[1]].color = state.prevStartCellColor;
+      moveGrid[state.start[0]][state.start[1]].icon = '';
       let prevState = moveGrid[action.row][action.column].state;
       let prevColor = moveGrid[action.row][action.column].color;
       //change the curr cell state
@@ -85,8 +88,8 @@ function reducer(state = initialState, action) {
         ...moveGrid[action.row][action.column],
       };
       moveGrid[action.row][action.column].state = 'start';
-      moveGrid[action.row][action.column].color = girdStyle.red;
-
+      moveGrid[action.row][action.column].icon = 'fas fa-sun';
+      moveGrid[action.row][action.column].iconstyle = girdStyle.start;
       return {
         ...state,
         grid: moveGrid,
@@ -103,6 +106,7 @@ function reducer(state = initialState, action) {
       };
       moveEndGrid[state.end[0]][state.end[1]].state = state.prevEndCellState;
       moveEndGrid[state.end[0]][state.end[1]].color = '';
+      moveEndGrid[state.end[0]][state.end[1]].icon = '';
       let prevEndState = moveEndGrid[action.row][action.column].state;
       let prevEndColor = moveEndGrid[action.row][action.column].color;
       //change the curr cell state
@@ -110,7 +114,7 @@ function reducer(state = initialState, action) {
         ...moveEndGrid[action.row][action.column],
       };
       moveEndGrid[action.row][action.column].state = 'Goal';
-      moveEndGrid[action.row][action.column].color = girdStyle.red;
+      moveEndGrid[action.row][action.column].icon = 'fas fa-bullseye';
 
       return {
         ...state,
@@ -125,7 +129,7 @@ function reducer(state = initialState, action) {
       pathGrid[action.row][action.column] = {
         ...pathGrid[action.row][action.column],
       };
-      pathGrid[action.row][action.column].color = girdStyle.red;
+      pathGrid[action.row][action.column].color = girdStyle.path;
       return { ...state, grid: pathGrid };
     default:
       return state;

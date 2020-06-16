@@ -5,6 +5,7 @@ import { bfs } from './BFS';
 import { sleep } from './ult';
 import headerStyle from './header.module.css';
 import selectStyle from './selectMenu.module.css';
+import testStyle from './test.module.scss';
 class Header extends React.Component {
   search = async (grid, start) => {
     let ans = await bfs(grid, start, this.props.paint);
@@ -18,13 +19,16 @@ class Header extends React.Component {
 
     let startrow = start[0];
     let startcol = start[1];
+
     for (let i = 0; i < ans.length; ++i) {
+      this.props.paintPath(startrow, startcol);
+      await sleep(20);
       let dr = direction[ans[i]];
       startrow += dr[0];
       startcol += dr[1];
-      this.props.paintPath(startrow, startcol);
-      await sleep(20);
     }
+    this.props.paintPath(startrow, startcol);
+    await sleep(20);
     // console.log(this.props.grid);
   };
   render() {
@@ -32,7 +36,6 @@ class Header extends React.Component {
     return (
       <div className={headerStyle.header}>
         <h3>PathFinding Visualizer</h3>
-
         <div className={headerStyle.button} onClick={this.props.clear}>
           <a href='#'>Clear</a>
         </div>

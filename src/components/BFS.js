@@ -20,8 +20,7 @@ export const bfs = async function (grid, startCoordinates, callback) {
   while (queue.length > 0) {
     // Take the first location off the queue
     var currentLocation = queue.shift();
-    // callback(currentLocation.distanceFromTop, currentLocation.distanceFromLeft);
-    // await sleep(0);
+
     // Explore North
     var newLocationNorth = await exploreInDirection(
       currentLocation,

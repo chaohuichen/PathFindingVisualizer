@@ -41,7 +41,8 @@ class Grid extends Component {
   startMoveCell = (grid, row, col) => {
     if (grid[row][col].state === 'start') {
       this.setState({ moveStart: true });
-    } else if (grid[row][col].state === 'Goal') {
+    }
+    if (grid[row][col].state === 'Goal') {
       this.setState({ moveEnd: true });
     }
   };
@@ -51,7 +52,6 @@ class Grid extends Component {
     return (
       <div id='pixelate'>
         {/* truncated for brevity... */}
-
         <table
           onMouseDown={() => this.setState({ paint: true })}
           onMouseUp={() => this.setState({ paint: false })}
@@ -77,12 +77,8 @@ class Grid extends Component {
                     className={grid[rowIndex][cellIndex].color}
                   >
                     <i
-                      className={
-                        grid[rowIndex][cellIndex].state === 'Goal'
-                          ? 'fas fa-bullseye'
-                          : null
-                      }
-                      style={{ marginLeft: '3px', color: 'blue' }}
+                      className={`${grid[rowIndex][cellIndex].icon} ${grid[rowIndex][cellIndex].iconstyle}`}
+                      style={{ color: 'blue', marginLeft: '3px' }}
                     ></i>
                   </td>
                 ))}
