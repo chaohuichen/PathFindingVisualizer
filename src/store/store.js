@@ -12,9 +12,11 @@ gird[10][39] = { state: 'Goal', color: girdStyle.red };
 const initialState = {
   grid: gird,
   start: [10, 10],
-  end: [gird.length - 1, gird[0].length - 1],
-  prevCellState: 'Empty',
-  prevCellColor: '',
+  end: [10, 39],
+  prevStartCellState: 'Empty',
+  prevStartCellColor: '',
+  prevEndCellState: 'Empty',
+  prevEndCellColor: '',
 };
 // const initialState = { grid: Array(20).fill(Array(80).fill('')) };
 
@@ -22,6 +24,7 @@ const initialState = {
 const COLORIZE = 'COLORIZE';
 const CLEAR = 'CLEAR';
 const SET_START = 'SET_START';
+const SET_END = 'SET_END';
 const PAINT_PATH = 'PAINT_PATH';
 const DRAW_WALL = 'DRAW_WALL';
 
@@ -30,6 +33,7 @@ export const colorize = (row, column) => ({ type: COLORIZE, row, column });
 export const drawWall = (row, column) => ({ type: DRAW_WALL, row, column });
 export const clear = () => ({ type: CLEAR });
 export const setStart = (row, column) => ({ type: SET_START, row, column });
+export const setEnd = (row, column) => ({ type: SET_END, row, column });
 export const paintPath = (row, column) => ({ type: PAINT_PATH, row, column });
 //reducer
 function reducer(state = initialState, action) {
@@ -65,8 +69,8 @@ function reducer(state = initialState, action) {
       moveGrid[state.start[0]][state.start[1]] = {
         ...moveGrid[state.start[0]][state.start[1]],
       };
-      moveGrid[state.start[0]][state.start[1]].state = state.prevCellState;
-      moveGrid[state.start[0]][state.start[1]].color = state.prevCellColor;
+      moveGrid[state.start[0]][state.start[1]].state = state.prevStartCellState;
+      moveGrid[state.start[0]][state.start[1]].color = state.prevStartCellColor;
       let prevState = moveGrid[action.row][action.column].state;
       let prevColor = moveGrid[action.row][action.column].color;
       //change the curr cell state
@@ -80,8 +84,33 @@ function reducer(state = initialState, action) {
         ...state,
         grid: moveGrid,
         start: [action.row, action.column],
-        prevCellState: prevState,
-        prevCellColor: prevColor,
+        prevStartCellState: prevState,
+        prevStartCellColor: prevColor,
+      };
+    case SET_END:
+      const moveEndGrid = [...state.grid];
+      moveEndGrid[action.row] = [...moveEndGrid[action.row]];
+      //change the prev cell state
+      moveEndGrid[state.end[0]][state.end[1]] = {
+        ...moveEndGrid[state.end[0]][state.end[1]],
+      };
+      moveEndGrid[state.end[0]][state.end[1]].state = state.prevEndCellState;
+      moveEndGrid[state.end[0]][state.end[1]].color = '';
+      let prevEndState = moveEndGrid[action.row][action.column].state;
+      let prevEndColor = moveEndGrid[action.row][action.column].color;
+      //change the curr cell state
+      moveEndGrid[action.row][action.column] = {
+        ...moveEndGrid[action.row][action.column],
+      };
+      moveEndGrid[action.row][action.column].state = 'Goal';
+      moveEndGrid[action.row][action.column].color = girdStyle.red;
+
+      return {
+        ...state,
+        grid: moveEndGrid,
+        end: [action.row, action.column],
+        prevEndCellState: prevEndState,
+        prevEndCellColor: prevEndColor,
       };
     case PAINT_PATH:
       //[east,north,south,west]

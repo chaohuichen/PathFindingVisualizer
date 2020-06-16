@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { colorize, paintPath, drawWall, setStart } from '../store/store';
+import {
+  colorize,
+  paintPath,
+  drawWall,
+  setStart,
+  setEnd,
+} from '../store/store';
 
 class Grid extends Component {
   constructor() {
@@ -8,6 +14,7 @@ class Grid extends Component {
     this.state = {
       paint: false,
       moveStart: false,
+      moveEnd: false,
     };
 
     this.handleMousrover = this.handleMousrover.bind(this);
@@ -15,13 +22,28 @@ class Grid extends Component {
 
   async handleMousrover(row, col) {
     if (this.state.moveStart) {
-      console.log('hello');
       await this.props.setStart(row, col);
+    } else if (this.state.moveEnd) {
+      await this.props.setEnd(row, col);
     } else if (this.state.paint) {
       this.props.drawWall(row, col);
     }
   }
+  stopMoveCell = (grid, row, col) => {
+    if (grid[row][col].state === 'start') {
+      this.setState({ moveStart: false });
+    } else if (grid[row][col].state === 'Goal') {
+      this.setState({ moveEnd: false });
+    }
+  };
 
+  startMoveCell = (grid, row, col) => {
+    if (grid[row][col].state === 'start') {
+      this.setState({ moveStart: true });
+    } else if (grid[row][col].state === 'Goal') {
+      this.setState({ moveEnd: true });
+    }
+  };
   render() {
     const { grid } = this.props;
 
@@ -43,14 +65,10 @@ class Grid extends Component {
                       this.handleMousrover(rowIndex, cellIndex)
                     }
                     onMouseUp={() => {
-                      if (grid[rowIndex][cellIndex].state === 'start') {
-                        this.setState({ moveStart: false });
-                      }
+                      this.stopMoveCell(grid, rowIndex, cellIndex);
                     }}
                     onMouseDown={() => {
-                      if (grid[rowIndex][cellIndex].state === 'start') {
-                        this.setState({ moveStart: true });
-                      }
+                      this.startMoveCell(grid, rowIndex, cellIndex);
                     }}
                     onClick={() => {
                       this.props.drawWall(rowIndex, cellIndex);
@@ -79,6 +97,7 @@ const mapDispatch = (dispatch) => {
     paintPath: (row, col) => dispatch(paintPath(row, col)),
     drawWall: (row, col) => dispatch(drawWall(row, col)),
     setStart: (row, col) => dispatch(setStart(row, col)),
+    setEnd: (row, col) => dispatch(setEnd(row, col)),
   };
 };
 export default connect(mapState, mapDispatch)(Grid);
