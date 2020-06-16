@@ -5,13 +5,13 @@ import girdStyle from './Grid.module.css';
 let gird = new Array(20).fill([]);
 for (let i = 0; i < gird.length; ++i) {
   gird[i] = new Array(40).fill({ state: 'Empty', color: '' });
+  //set up the start point and end point
   if (i === 11) {
-    gird[10][10] = { state: 'start', icon: 'fas fa-sun' };
-    gird[10][39] = { state: 'Goal', icon: 'fas fa-bullseye' };
+    gird[10][10] = { state: 'start', color: '', icon: 'fas fa-sun' };
+    gird[10][39] = { state: 'Goal', color: '', icon: 'fas fa-bullseye' };
   }
 }
 
-// gird[10][10] = { state: 1, color: girdStyle.red };
 const initialState = {
   grid: gird,
   start: [10, 10],
@@ -21,9 +21,6 @@ const initialState = {
   prevEndCellState: 'Empty',
   prevEndCellColor: '',
 };
-// gird[10][10] = { state: 'start', color: girdStyle.red };
-// gird[10][39] = { state: 'Goal', color: girdStyle.red };
-// const initialState = { grid: Array(20).fill(Array(80).fill('')) };
 
 //action type
 const COLORIZE = 'COLORIZE';
@@ -66,8 +63,9 @@ function reducer(state = initialState, action) {
       };
       if (newGrid[action.row][action.column].color === '') {
         newGrid[action.row][action.column].state = 'Visited';
-        newGrid[action.row][action.column].color = girdStyle.element;
+        newGrid[action.row][action.column].color = girdStyle.visited;
       }
+
       return { ...state, grid: newGrid };
     case CLEAR:
       return initialState;
@@ -81,12 +79,14 @@ function reducer(state = initialState, action) {
       moveGrid[state.start[0]][state.start[1]].state = state.prevStartCellState;
       moveGrid[state.start[0]][state.start[1]].color = state.prevStartCellColor;
       moveGrid[state.start[0]][state.start[1]].icon = '';
+      //save the prev cell state for later change
       let prevState = moveGrid[action.row][action.column].state;
       let prevColor = moveGrid[action.row][action.column].color;
       //change the curr cell state
       moveGrid[action.row][action.column] = {
         ...moveGrid[action.row][action.column],
       };
+      moveGrid[action.row][action.column].color = '';
       moveGrid[action.row][action.column].state = 'start';
       moveGrid[action.row][action.column].icon = 'fas fa-sun';
       moveGrid[action.row][action.column].iconstyle = girdStyle.start;
@@ -105,17 +105,20 @@ function reducer(state = initialState, action) {
         ...moveEndGrid[state.end[0]][state.end[1]],
       };
       moveEndGrid[state.end[0]][state.end[1]].state = state.prevEndCellState;
-      moveEndGrid[state.end[0]][state.end[1]].color = '';
+      moveEndGrid[state.end[0]][state.end[1]].color = state.prevEndCellColor;
       moveEndGrid[state.end[0]][state.end[1]].icon = '';
+
+      //save the prev cell state for later change
       let prevEndState = moveEndGrid[action.row][action.column].state;
       let prevEndColor = moveEndGrid[action.row][action.column].color;
       //change the curr cell state
       moveEndGrid[action.row][action.column] = {
         ...moveEndGrid[action.row][action.column],
       };
+      moveEndGrid[action.row][action.column].color = '';
       moveEndGrid[action.row][action.column].state = 'Goal';
       moveEndGrid[action.row][action.column].icon = 'fas fa-bullseye';
-
+      moveEndGrid[action.row][action.column].iconstyle = girdStyle.end;
       return {
         ...state,
         grid: moveEndGrid,
@@ -124,7 +127,6 @@ function reducer(state = initialState, action) {
         prevEndCellColor: prevEndColor,
       };
     case PAINT_PATH:
-      //[east,north,south,west]
       const pathGrid = [...state.grid];
       pathGrid[action.row][action.column] = {
         ...pathGrid[action.row][action.column],
@@ -136,6 +138,6 @@ function reducer(state = initialState, action) {
   }
 }
 
-const store = createStore(reducer, applyMiddleware(loggerMiddleware));
+const store = createStore(reducer);
 
 export default store;

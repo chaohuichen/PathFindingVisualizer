@@ -12,6 +12,8 @@ export const bfs = async function (grid, startCoordinates, callback) {
     path: [],
     status: 'Start',
   };
+  callback(startCoordinates[0], startCoordinates[1]);
+  await sleep(0);
 
   // Initialize the queue with the start location already inside
   var queue = [location];
@@ -144,12 +146,13 @@ var exploreInDirection = async function (
     status: 'Unknown',
   };
   newLocation.status = locationStatus(newLocation, grid, set);
-  // callback(newLocation.distanceFromTop, newLocation.distanceFromLeft);
-  // await sleep(0);
+
   // If this new location is valid, mark it as 'Visited'
   if (newLocation.status === 'Valid') {
-    // grid[newLocation.distanceFromTop][newLocation.distanceFromLeft] = 'Visited';
     set.add(`${newLocation.distanceFromTop}|${newLocation.distanceFromLeft}`);
+    callback(newLocation.distanceFromTop, newLocation.distanceFromLeft);
+    await sleep(0);
+  } else if (newLocation.status === 'Goal') {
     callback(newLocation.distanceFromTop, newLocation.distanceFromLeft);
     await sleep(0);
   }

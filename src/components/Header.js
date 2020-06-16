@@ -5,11 +5,13 @@ import { bfs } from './BFS';
 import { sleep } from './ult';
 import headerStyle from './header.module.css';
 import selectStyle from './selectMenu.module.css';
-import testStyle from './test.module.scss';
+
 class Header extends React.Component {
   search = async (grid, start) => {
+    //run the bfs function search
     let ans = await bfs(grid, start, this.props.paint);
-    //north,south west    east
+
+    //north,south,west,east
     let direction = {
       North: [-1, 0],
       South: [1, 0],
@@ -19,7 +21,7 @@ class Header extends React.Component {
 
     let startrow = start[0];
     let startcol = start[1];
-
+    //draw the path after we have the direction from bfs function
     for (let i = 0; i < ans.length; ++i) {
       this.props.paintPath(startrow, startcol);
       await sleep(20);
@@ -27,9 +29,9 @@ class Header extends React.Component {
       startrow += dr[0];
       startcol += dr[1];
     }
+    //draw the last cell
     this.props.paintPath(startrow, startcol);
     await sleep(20);
-    // console.log(this.props.grid);
   };
   render() {
     const { grid, start } = this.props;

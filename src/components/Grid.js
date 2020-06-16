@@ -35,15 +35,18 @@ class Grid extends Component {
       this.setState({ moveStart: false });
     } else if (grid[row][col].state === 'Goal') {
       this.setState({ moveEnd: false });
+    } else {
+      this.setState({ paint: false });
     }
   };
 
   startMoveCell = (grid, row, col) => {
     if (grid[row][col].state === 'start') {
       this.setState({ moveStart: true });
-    }
-    if (grid[row][col].state === 'Goal') {
+    } else if (grid[row][col].state === 'Goal') {
       this.setState({ moveEnd: true });
+    } else {
+      this.setState({ paint: true });
     }
   };
   render() {
@@ -52,10 +55,7 @@ class Grid extends Component {
     return (
       <div id='pixelate'>
         {/* truncated for brevity... */}
-        <table
-          onMouseDown={() => this.setState({ paint: true })}
-          onMouseUp={() => this.setState({ paint: false })}
-        >
+        <table>
           <tbody>
             {grid.map((row, rowIndex) => (
               <tr key={rowIndex}>
@@ -78,7 +78,7 @@ class Grid extends Component {
                   >
                     <i
                       className={`${grid[rowIndex][cellIndex].icon} ${grid[rowIndex][cellIndex].iconstyle}`}
-                      style={{ color: 'blue', marginLeft: '3px' }}
+                      style={{ color: 'blue', marginLeft: '3.5px' }}
                     ></i>
                   </td>
                 ))}
