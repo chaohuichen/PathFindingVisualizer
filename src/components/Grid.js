@@ -22,9 +22,12 @@ class Grid extends Component {
   }
 
   async handleMousrover(row, col) {
-    if (this.state.moveStart) {
+    if (this.state.moveStart && this.props.grid[row][col].state !== 'Goal') {
       await this.props.setStart(row, col);
-    } else if (this.state.moveEnd) {
+    } else if (
+      this.state.moveEnd &&
+      this.props.grid[row][col].state !== 'start'
+    ) {
       await this.props.setEnd(row, col);
     } else if (this.state.paint) {
       this.props.drawWall(row, col);

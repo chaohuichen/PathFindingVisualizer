@@ -68,7 +68,34 @@ function reducer(state = initialState, action) {
 
       return { ...state, grid: newGrid };
     case CLEAR:
-      return initialState;
+      let clearGrid = [...initialState.grid];
+      const [startrow, startcol] = initialState.start;
+      clearGrid[startrow] = [...clearGrid[startrow]];
+      clearGrid[startrow][startcol] = { ...clearGrid[startrow][startcol] };
+      clearGrid[startrow][startcol] = {
+        state: 'start',
+        color: '',
+        icon: 'fas fa-sun',
+      };
+
+      const [endrow, endcol] = initialState.end;
+      clearGrid[endrow] = [...clearGrid[endrow]];
+      clearGrid[endrow][endcol] = { ...clearGrid[endrow][endcol] };
+      clearGrid[endrow][endcol] = {
+        state: 'Goal',
+        color: '',
+        icon: 'fas fa-bullseye',
+      };
+      return {
+        ...state,
+        grid: clearGrid,
+        start: initialState.start,
+        end: initialState.end,
+        prevStartCellState: initialState.prevStartCellState,
+        prevStartCellColor: initialState.prevStartCellColor,
+        prevEndCellState: initialState.prevEndState,
+        prevEndCellColor: initialState.prevEndCellColor,
+      };
     case SET_START:
       const moveGrid = [...state.grid];
       moveGrid[action.row] = [...moveGrid[action.row]];
@@ -138,6 +165,6 @@ function reducer(state = initialState, action) {
   }
 }
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(loggerMiddleware));
 
 export default store;
