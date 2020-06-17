@@ -5,7 +5,7 @@ import { bfs } from './BFS';
 import { sleep } from './ult';
 import headerStyle from './header.module.css';
 import selectStyle from './selectMenu.module.css';
-
+import buttonStyle from './button.module.scss';
 class Header extends React.Component {
   search = async (grid, start) => {
     //run the bfs function search
@@ -38,15 +38,15 @@ class Header extends React.Component {
     return (
       <div className={headerStyle.header}>
         <h3>PathFinding Visualizer</h3>
-        <div className={headerStyle.button} onClick={this.props.clear}>
-          <a href='#'>Clear</a>
-        </div>
-        <div
-          className={headerStyle.button}
+        <button
+          className={buttonStyle.startBtn}
           onClick={() => this.search(grid, start)}
         >
-          <a href='#'>Start</a>
-        </div>
+          <p style={{ color: 'white', fontWeight: 'bold' }}>Start</p>
+        </button>
+        <button className={buttonStyle.endBtn} onClick={this.props.clear}>
+          <p style={{ color: 'white', fontWeight: 'bold' }}>Clear</p>
+        </button>
       </div>
     );
   }

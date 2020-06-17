@@ -69,7 +69,7 @@
   }
 }
 
-.start {
+.startPoint {
   color: blue;
   transform: scale(1.1);
   animation-name: stretchStart;
@@ -94,7 +94,7 @@
   }
 }
 
-.end {
+.endPoint {
   color: blue;
   transform: scale(1);
   animation-name: stretchEnd;
