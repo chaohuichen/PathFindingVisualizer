@@ -8,6 +8,12 @@ import buttonStyle from './button.module.scss';
 import { Navbar, NavDropdown, Nav } from 'react-bootstrap';
 
 class Header extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      algo: 'Algorithms',
+    };
+  }
   search = async (grid, start) => {
     //run the bfs function search
     let ans = await bfs(grid, start, this.props.paint);
@@ -55,7 +61,13 @@ class Header extends React.Component {
       //   </button>
 
       // </div>
-      <Navbar className={headerStyle.header} expand='lg'>
+      <Navbar
+        className={headerStyle.header}
+        expand='lg'
+        onSelect={(eventKey) => {
+          this.setState({ algo: eventKey });
+        }}
+      >
         <Navbar.Brand
           className={headerStyle.brand}
           href='https://chaohuichen.github.io/PathFindingVisualizer/'
@@ -80,15 +92,19 @@ class Header extends React.Component {
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='mr-auto'>
             <Nav.Link href='#link'>Link</Nav.Link>
-            <NavDropdown title='Dropdown' id='basic-nav-dropdown'>
-              <NavDropdown.Item href='#action/3.1'>Action</NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.2'>
-                Another action
+            <NavDropdown title={this.state.algo} id='basic-nav-dropdown'>
+              <NavDropdown.Item eventKey='BreathFirstSearch'>
+                Breadth First Search
               </NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.3'>Something</NavDropdown.Item>
-              <NavDropdown.Divider />
+              <NavDropdown.Item href='#action/3.2'>
+                Another Algo 1
+              </NavDropdown.Item>
+              <NavDropdown.Item href='#action/3.3'>
+                Another Algo 2
+              </NavDropdown.Item>
+
               <NavDropdown.Item href='#action/3.4'>
-                Separated link
+                Another Algo 3
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
