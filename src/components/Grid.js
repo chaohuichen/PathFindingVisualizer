@@ -8,7 +8,7 @@ import {
   setEnd,
 } from '../store/store';
 import 'font-awesome/css/font-awesome.min.css';
-
+import style from './selectMenu.module.css';
 class Grid extends Component {
   constructor() {
     super();
@@ -64,6 +64,7 @@ class Grid extends Component {
               <tr key={rowIndex}>
                 {row.map((color, cellIndex) => (
                   <td
+                    className={style.cell}
                     key={cellIndex}
                     onMouseOver={() =>
                       this.handleMousrover(rowIndex, cellIndex)

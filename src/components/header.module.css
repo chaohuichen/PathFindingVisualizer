@@ -4,9 +4,12 @@
   z-index: 3;
   flex-direction: row;
   background-color: #45b4d4;
+  height: 80px;
 }
-.header > h3 {
-  align-self: center;
+
+.brand {
+  font-size: large;
+  color: white;
 }
 .button {
   position: relative;

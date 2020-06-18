@@ -4,8 +4,9 @@ import { clear, colorize, paintPath } from '../store/store';
 import { bfs } from './BFS';
 import { sleep } from './ult';
 import headerStyle from './header.module.css';
-import selectStyle from './selectMenu.module.css';
 import buttonStyle from './button.module.scss';
+import { Navbar, NavDropdown, Nav } from 'react-bootstrap';
+
 class Header extends React.Component {
   search = async (grid, start) => {
     //run the bfs function search
@@ -36,18 +37,63 @@ class Header extends React.Component {
   render() {
     const { grid, start } = this.props;
     return (
-      <div className={headerStyle.header}>
-        <h3>PathFinding Visualizer</h3>
+      // <div className={headerStyle.header}>
+      //   <h3>PathFinding Visualizer</h3>
+
+      //   <select name='cars' id='cars' className={headerStyle.select}>
+      //     <option value='volvo'>Volvo</option>
+      //     <option value='saab'>Saab</option>
+      //     <option value='mercedes'>Mercedes</option>
+      //     <option value='audi'>Audi</option>
+      //   </select>
+
+      //   <button
+      //     className={buttonStyle.startBtn}
+      //     onClick={() => this.search(grid, start)}
+      //   >
+      //     <p style={{ color: 'white', fontWeight: 'bold' }}>Start</p>
+      //   </button>
+
+      // </div>
+      <Navbar className={headerStyle.header} expand='lg'>
+        <Navbar.Brand
+          className={headerStyle.brand}
+          href='https://chaohuichen.github.io/PathFindingVisualizer/'
+          style={{ fontWeight: 'bold', color: 'white', fontSize: '30px' }}
+        >
+          PathFinding Visualizer
+        </Navbar.Brand>
         <button
           className={buttonStyle.startBtn}
           onClick={() => this.search(grid, start)}
         >
-          <p style={{ color: 'white', fontWeight: 'bold' }}>Start</p>
+          <p style={{ color: 'white', fontWeight: 'bold', marginTop: '10px' }}>
+            Start
+          </p>
         </button>
         <button className={buttonStyle.endBtn} onClick={this.props.clear}>
-          <p style={{ color: 'white', fontWeight: 'bold' }}>Clear</p>
+          <p style={{ color: 'white', fontWeight: 'bold', marginTop: '10px' }}>
+            Clear
+          </p>
         </button>
-      </div>
+        <Navbar.Toggle aria-controls='basic-navbar-nav' />
+        <Navbar.Collapse id='basic-navbar-nav'>
+          <Nav className='mr-auto'>
+            <Nav.Link href='#link'>Link</Nav.Link>
+            <NavDropdown title='Dropdown' id='basic-nav-dropdown'>
+              <NavDropdown.Item href='#action/3.1'>Action</NavDropdown.Item>
+              <NavDropdown.Item href='#action/3.2'>
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href='#action/3.3'>Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href='#action/3.4'>
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }

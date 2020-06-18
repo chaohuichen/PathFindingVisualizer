@@ -5,18 +5,21 @@
 
 html {
   background-color: lightgray;
-  color: white;
 }
 
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: transparent;
 }
 
 td {
   height: 25px;
   width: 25px;
+  border-color: #45b4d4;
+  border-width: 1px;
+  border-style: solid;
   background-color: white;
   transition: background-color 0.5s ease;
 }
