@@ -77,7 +77,7 @@ class Header extends React.Component {
         </Navbar.Brand>
 
         <a
-          href='#'
+          href='#start'
           role='button'
           className={buttonStyle.startBtn}
           onClick={() => {
@@ -89,7 +89,7 @@ class Header extends React.Component {
           <p className={buttonStyle.buttonText}>Start</p>
         </a>
         <a
-          href='#'
+          href='#clear'
           role='button'
           className={buttonStyle.endBtn}
           onClick={this.props.clear}
