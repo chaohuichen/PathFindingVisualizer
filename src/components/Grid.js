@@ -64,7 +64,6 @@ class Grid extends Component {
               <tr key={rowIndex}>
                 {row.map((color, cellIndex) => (
                   <td
-                    className={style.cell}
                     key={cellIndex}
                     onMouseOver={() =>
                       this.handleMousrover(rowIndex, cellIndex)

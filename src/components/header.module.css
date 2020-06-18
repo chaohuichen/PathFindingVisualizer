@@ -5,6 +5,7 @@
   flex-direction: row;
   background-color: #45b4d4;
   height: 80px;
+  justify-content: center;
 }
 
 .brand {
@@ -64,4 +65,11 @@
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+}
+
+.navitem:hover {
+  color: white;
+
+  font-weight: 'bold';
+  background-color: #f78900;
 }

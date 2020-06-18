@@ -75,36 +75,58 @@ class Header extends React.Component {
         >
           PathFinding Visualizer
         </Navbar.Brand>
-        <button
+
+        <a
+          href='#'
+          role='button'
           className={buttonStyle.startBtn}
-          onClick={() => this.search(grid, start)}
+          onClick={() => {
+            this.search(grid, start);
+            return false;
+          }}
+          style={{ textDecoration: 'none' }}
         >
-          <p style={{ color: 'white', fontWeight: 'bold', marginTop: '10px' }}>
-            Start
-          </p>
-        </button>
-        <button className={buttonStyle.endBtn} onClick={this.props.clear}>
-          <p style={{ color: 'white', fontWeight: 'bold', marginTop: '10px' }}>
+          <p className={buttonStyle.buttonText}>Start</p>
+        </a>
+        <a
+          href='#'
+          role='button'
+          className={buttonStyle.endBtn}
+          onClick={this.props.clear}
+        >
+          <p className={buttonStyle.buttonText} style={{ marginLeft: '14px' }}>
             Clear
           </p>
-        </button>
+        </a>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
-          <Nav className='mr-auto'>
-            <Nav.Link href='#link'>Link</Nav.Link>
+          <Nav>
+            {/* <Nav.Link href='#link'>Link</Nav.Link> */}
             <NavDropdown title={this.state.algo} id='basic-nav-dropdown'>
-              <NavDropdown.Item eventKey='BreathFirstSearch'>
+              <NavDropdown.Item
+                className={headerStyle.navitem}
+                eventKey='BreathFirstSearch'
+              >
                 Breadth First Search
               </NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.2'>
-                Another Algo 1
+              <NavDropdown.Item
+                className={headerStyle.navitem}
+                eventKey='DepthFirstSearch'
+              >
+                Depth First Search
               </NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.3'>
-                Another Algo 2
+              <NavDropdown.Item
+                className={headerStyle.navitem}
+                eventKey='A * Algorithm'
+              >
+                A * Algorithm
               </NavDropdown.Item>
 
-              <NavDropdown.Item href='#action/3.4'>
-                Another Algo 3
+              <NavDropdown.Item
+                className={headerStyle.navitem}
+                eventKey="Dijkstra's Algorithm"
+              >
+                Dijkstra's Algorithm
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
