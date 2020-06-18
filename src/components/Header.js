@@ -93,6 +93,7 @@ class Header extends React.Component {
           role='button'
           className={buttonStyle.endBtn}
           onClick={this.props.clear}
+          style={{ textDecoration: 'none' }}
         >
           <p className={buttonStyle.buttonText} style={{ marginLeft: '14px' }}>
             Clear

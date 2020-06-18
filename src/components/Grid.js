@@ -61,7 +61,7 @@ class Grid extends Component {
         <table>
           <tbody>
             {grid.map((row, rowIndex) => (
-              <tr key={rowIndex}>
+              <tr key={rowIndex} value={rowIndex}>
                 {row.map((color, cellIndex) => (
                   <td
                     key={cellIndex}
