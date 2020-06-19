@@ -102,14 +102,19 @@ class Header extends React.Component {
         <a
           href='#start'
           role='button'
-          className={buttonStyle.startBtn}
+          className={buttonStyle.push}
           onClick={() => {
             this.props.clearPath();
             return false;
           }}
           style={{ textDecoration: 'none' }}
         >
-          <p className={buttonStyle.buttonText}>Clear Path</p>
+          <p
+            className={buttonStyle.buttonText}
+            style={{ marginLeft: '16px', marginTop: '10px' }}
+          >
+            Clear Path
+          </p>
         </a>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>

@@ -1,10 +1,19 @@
 $bg: #333;
 $start-color: hsl(133, 62%, 55%);
 $end-color: hsla(10, 90%, 40%, 1);
+$clear_path-color: rgb(10, 111, 194);
 $push-size: 70px;
 
 h1 {
   font-size: 5vw;
+}
+
+.buttonText {
+  color: white;
+  font-weight: 'bold';
+  font-size: 17px;
+  margin-top: 20px;
+  margin-left: 13px;
 }
 [class*='startBtn'] {
   position: relative;
@@ -131,81 +140,88 @@ h1 {
   }
 }
 
-.buttonText {
-  color: white;
-  font-weight: 'bold';
-  margin-top: 20px;
-  margin-left: 13px;
+[class*='push'] {
+  position: relative;
+  display: inline-block;
+  width: $push-size;
+  height: $push-size;
+  border: 0;
+  margin: 1em;
+  outline: none;
+  background-color: $clear_path-color;
+  border-radius: 0%;
+  cursor: pointer;
+  transition: box-shadow 200ms;
 }
-// .push--skeuo {
-//   box-shadow: inset 0 $push-size/24 0 lighten($push-color, 5%),
-//     inset 0 (-$push-size/24) $push-size/60 darken($push-color, 5%),
-//     0 0 $push-size/60 $push-color,
-//     inset 0 0 $push-size/30 darken($push-color, 15%),
-//     inset 0 0 $push-size/30 transparentize($bg, 0.5),
-//     inset 0 0 $push-size/60 $push-size/12 $push-color,
-//     inset 0 (-$push-size/30) $push-size/40 $push-size/10
-//       transparentize($bg, 0.3),
-//     inset 0 0 $push-size/60 $push-size/10 darken($push-color, 20%),
-//     inset 0 0 $push-size/60 $push-size/10 transparentize($bg, 0.3),
-//     inset 0 0 $push-size/120 $push-size/9.2 darken($push-color, 50%),
-//     inset 0 0 $push-size/120 $push-size/8
-//       transparentize(lighten($push-color, 30%), 0.3),
-//     inset 0 $push-size/20 0 $push-size/8.5
-//       transparentize(lighten($push-color, 15%), 0.3),
-//     inset 0 (-$push-size/20) $push-size/60 $push-size/8.5
-//       transparentize(darken($push-color, 10%), 0.8),
-//     inset 0 0 0 $push-size/5.5 $push-color,
-//     inset 0 $push-size/2.5 $push-size/7.5 darken($push-color, 5%),
-//     inset 0 0 $push-size/10 $push-size/6 darken($push-color, 10%),
-//     0 $push-size/40 $push-size/20 rgba(0, 0, 0, 0.5);
+.push {
+  box-shadow: inset 0 $push-size/24 0 lighten($clear_path-color, 5%),
+    inset 0 (-$push-size/24) $push-size/60 darken($clear_path-color, 5%),
+    0 0 $push-size/60 $clear_path-color,
+    inset 0 0 $push-size/30 darken($clear_path-color, 15%),
+    inset 0 0 $push-size/30 transparentize($bg, 0.5),
+    inset 0 0 $push-size/60 $push-size/12 $clear_path-color,
+    inset 0 (-$push-size/30) $push-size/40 $push-size/10
+      transparentize($bg, 0.3),
+    inset 0 0 $push-size/60 $push-size/10 darken($clear_path-color, 20%),
+    inset 0 0 $push-size/60 $push-size/10 transparentize($bg, 0.3),
+    inset 0 0 $push-size/120 $push-size/9.2 darken($clear_path-color, 50%),
+    inset 0 0 $push-size/120 $push-size/8
+      transparentize(lighten($clear_path-color, 30%), 0.3),
+    inset 0 $push-size/20 0 $push-size/8.5
+      transparentize(lighten($clear_path-color, 15%), 0.3),
+    inset 0 (-$push-size/20) $push-size/60 $push-size/8.5
+      transparentize(darken($clear_path-color, 10%), 0.8),
+    inset 0 0 0 $push-size/5.5 $clear_path-color,
+    inset 0 $push-size/2.5 $push-size/7.5 darken($clear_path-color, 5%),
+    inset 0 0 $push-size/10 $push-size/6 darken($clear_path-color, 10%),
+    0 $push-size/40 $push-size/20 rgba(0, 0, 0, 0.5);
 
-//   &:active,
-//   // &:hover,
-//   &.is-pushed {
-//     box-shadow: inset 0 $push-size/24 0 lighten($push-color, 5%),
-//       inset 0 (-$push-size/24) $push-size/60 darken($push-color, 5%),
-//       0 0 $push-size/60 $push-color,
-//       inset 0 0 $push-size/30 darken($push-color, 15%),
-//       inset 0 0 $push-size/30 transparentize($bg, 0.5),
-//       inset 0 0 $push-size/60 $push-size/12 $push-color,
-//       inset 0 (-$push-size/30) $push-size/40 $push-size/10
-//         transparentize($bg, 0.3),
-//       inset 0 0 $push-size/60 $push-size/10 darken($push-color, 20%),
-//       inset 0 0 $push-size/60 $push-size/10 transparentize($bg, 0.3),
-//       inset 0 0 $push-size/40 $push-size/8.5 darken($push-color, 40%),
-//       inset 0 0 $push-size/120 $push-size/7.5
-//         transparentize(lighten($push-color, 30%), 0.8),
-//       inset 0 $push-size/20 0 28px
-//         transparentize(lighten($push-color, 15%), 0.5),
-//       inset 0 (-$push-size/20) $push-size/60 28px
-//         transparentize(darken($push-color, 20%), 0.8),
-//       inset 0 0 0 $push-size/5.5 darken($push-color, 3%),
-//       inset 0 $push-size/2.5 $push-size/7.5 darken($push-color, 8%),
-//       inset 0 0 $push-size/10 $push-size/6 darken($push-color, 15%),
-//       0 $push-size/40 $push-size/20 rgba(0, 0, 0, 0.5);
-//     background-color: darken($push-color, 2%);
+  &:active,
+  // &:hover,
+  &.is-pushed {
+    box-shadow: inset 0 $push-size/24 0 lighten($clear_path-color, 5%),
+      inset 0 (-$push-size/24) $push-size/60 darken($clear_path-color, 5%),
+      0 0 $push-size/60 $clear_path-color,
+      inset 0 0 $push-size/30 darken($clear_path-color, 15%),
+      inset 0 0 $push-size/30 transparentize($bg, 0.5),
+      inset 0 0 $push-size/60 $push-size/12 $clear_path-color,
+      inset 0 (-$push-size/30) $push-size/40 $push-size/10
+        transparentize($bg, 0.3),
+      inset 0 0 $push-size/60 $push-size/10 darken($clear_path-color, 20%),
+      inset 0 0 $push-size/60 $push-size/10 transparentize($bg, 0.3),
+      inset 0 0 $push-size/40 $push-size/8.5 darken($clear_path-color, 40%),
+      inset 0 0 $push-size/120 $push-size/7.5
+        transparentize(lighten($clear_path-color, 30%), 0.8),
+      inset 0 $push-size/20 0 28px
+        transparentize(lighten($clear_path-color, 15%), 0.5),
+      inset 0 (-$push-size/20) $push-size/60 28px
+        transparentize(darken($clear_path-color, 20%), 0.8),
+      inset 0 0 0 $push-size/5.5 darken($clear_path-color, 3%),
+      inset 0 $push-size/2.5 $push-size/7.5 darken($clear_path-color, 8%),
+      inset 0 0 $push-size/10 $push-size/6 darken($clear_path-color, 15%),
+      0 $push-size/40 $push-size/20 rgba(0, 0, 0, 0.5);
+    background-color: darken($clear_path-color, 2%);
 
-//     &:before {
-//       opacity: 0.5;
-//     }
-//   }
+    &:before {
+      opacity: 0.5;
+    }
+  }
 
-//   &:before {
-//     content: '';
-//     position: absolute;
-//     bottom: $push-size/4.5;
-//     left: $push-size/3.6;
-//     display: block;
-//     width: $push-size/2.2;
-//     height: $push-size/3.3;
-//     background: transparentize(lighten($push-color, 30%), 0.8);
-//     background: linear-gradient(
-//       to top,
-//       transparentize(lighten($push-color, 40%), 0.7) 0%,
-//       transparentize($push-color, 0.9) 100%
-//     );
-//     border-radius: 40% 40% 60% 60%;
-//     transition: opacity 200ms;
-//   }
-// }
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: $push-size/4.5;
+    left: $push-size/3.6;
+    display: block;
+    width: $push-size/2.2;
+    height: $push-size/3.3;
+    background: transparentize(lighten($clear_path-color, 30%), 0.8);
+    background: linear-gradient(
+      to top,
+      transparentize(lighten($clear_path-color, 40%), 0.7) 0%,
+      transparentize($clear_path-color, 0.9) 100%
+    );
+    border-radius: 40% 40% 60% 60%;
+    transition: opacity 200ms;
+  }
+}
