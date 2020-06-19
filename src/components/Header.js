@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { clear, colorize, paintPath } from '../store/store';
+import { clear, colorize, paintPath, clearPath } from '../store/store';
 import { bfs } from './BFS';
 import { sleep } from './ult';
 import headerStyle from './header.module.css';
@@ -99,6 +99,18 @@ class Header extends React.Component {
             Clear
           </p>
         </a>
+        <a
+          href='#start'
+          role='button'
+          className={buttonStyle.startBtn}
+          onClick={() => {
+            this.props.clearPath();
+            return false;
+          }}
+          style={{ textDecoration: 'none' }}
+        >
+          <p className={buttonStyle.buttonText}>Clear Path</p>
+        </a>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav>
@@ -148,6 +160,7 @@ const mapDispatch = (dispatch) => {
     clear: () => dispatch(clear()),
     paint: (row, col) => dispatch(colorize(row, col)),
     paintPath: (row, col) => dispatch(paintPath(row, col)),
+    clearPath: () => dispatch(clearPath()),
   };
 };
 

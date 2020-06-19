@@ -29,7 +29,7 @@ const SET_START = 'SET_START';
 const SET_END = 'SET_END';
 const PAINT_PATH = 'PAINT_PATH';
 const DRAW_WALL = 'DRAW_WALL';
-
+const CLEAR_PATH = 'CLEAR_PATH';
 //action creator
 export const colorize = (row, column) => ({ type: COLORIZE, row, column });
 export const drawWall = (row, column) => ({ type: DRAW_WALL, row, column });
@@ -37,7 +37,7 @@ export const clear = () => ({ type: CLEAR });
 export const setStart = (row, column) => ({ type: SET_START, row, column });
 export const setEnd = (row, column) => ({ type: SET_END, row, column });
 export const paintPath = (row, column) => ({ type: PAINT_PATH, row, column });
-
+export const clearPath = () => ({ type: CLEAR_PATH });
 //reducer
 function reducer(state = initialState, action) {
   switch (action.type) {
@@ -49,11 +49,16 @@ function reducer(state = initialState, action) {
       };
       if (
         wallGrid[action.row][action.column].state !== 'Goal' &&
-        wallGrid[action.row][action.column].state !== 'start'
+        wallGrid[action.row][action.column].state !== 'start' &&
+        wallGrid[action.row][action.column].state !== 'Blocked'
       ) {
         wallGrid[action.row][action.column].state = 'Blocked';
         wallGrid[action.row][action.column].color = girdStyle.wall;
+      } else if (wallGrid[action.row][action.column].state === 'Blocked') {
+        wallGrid[action.row][action.column].state = 'Empty';
+        wallGrid[action.row][action.column].color = '';
       }
+
       return { ...state, grid: wallGrid };
     case COLORIZE:
       const newGrid = [...state.grid];
@@ -67,6 +72,30 @@ function reducer(state = initialState, action) {
       }
 
       return { ...state, grid: newGrid };
+    case CLEAR_PATH:
+      const clearPathGrid = [...state.grid];
+      //set the start state back
+      const [start_row, start_col] = state.start;
+      clearPathGrid[start_row][start_col] = {
+        ...clearPathGrid[start_row][start_col],
+      };
+      clearPathGrid[start_row][start_col].state = 'start';
+      clearPathGrid[start_row][start_col].color = '';
+      //set the goal state back
+      const [end_row, end_col] = state.end;
+      clearPathGrid[end_row][end_col] = { ...clearPathGrid[end_row][end_col] };
+      clearPathGrid[end_row][end_col].state = 'Goal';
+      clearPathGrid[end_row][end_col].color = '';
+      for (let i = 0; i < clearPathGrid.length; ++i) {
+        for (let j = 0; j < clearPathGrid[0].length; ++j) {
+          if (clearPathGrid[i][j].state === 'Visited') {
+            clearPathGrid[i][j] = { ...clearPathGrid[i][j] };
+            clearPathGrid[i][j].state = 'Empty';
+            clearPathGrid[i][j].color = '';
+          }
+        }
+      }
+      return { ...state, grid: clearPathGrid };
     case CLEAR:
       let clearGrid = [...initialState.grid];
       const [startrow, startcol] = initialState.start;
@@ -165,6 +194,6 @@ function reducer(state = initialState, action) {
   }
 }
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(loggerMiddleware));
 
 export default store;
