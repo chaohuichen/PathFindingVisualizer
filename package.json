@@ -11,6 +11,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.5.0",
+    "collections": "^5.1.11",
     "font-awesome": "^4.7.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",

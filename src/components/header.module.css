@@ -73,3 +73,27 @@
   font-weight: 'bold';
   background-color: #f78900;
 }
+
+.text {
+  /* position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0; */
+  /* margin-top: 10px; */
+  height: 50px;
+  color: white;
+  width: 100%;
+  text-align: center;
+  margin: auto;
+  font-size: 40px;
+  line-height: 40px;
+  letter-spacing: 5px;
+  text-shadow: -2px 0 0 #fdff2a, -4px 0 0 #df4a42, 2px 0 0 #91fcfe,
+    4px 0 0 #4405fc;
+  /* // animation: blink 1s steps(4, start) infinite */
+
+  /* @keyframes blink
+   to
+     visibility: hidden; */
+}

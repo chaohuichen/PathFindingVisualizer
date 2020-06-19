@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { clear, colorize, paintPath, clearPath } from '../store/store';
 import { bfs } from './BFS';
+import { Dijstra,getNodesInShortestPathOrder } from './Dijstra';
 import { sleep } from './ult';
 import headerStyle from './header.module.css';
 import buttonStyle from './button.module.scss';
@@ -14,6 +15,18 @@ class Header extends React.Component {
       algo: 'Algorithms',
     };
   }
+
+  searchDijstra = async (grid, start) => {
+    let path =await  Dijstra(grid, start,this.props.paint);
+    const newpath = getNodesInShortestPathOrder(grid[4][4])
+    console.log("result",newpath )
+    for(let i =newpath.length-1;i>=0;--i){
+    
+      // console.log(path[i].coord[0],path[i].coord[1])
+      this.props.paintPath(newpath[i].coord[0],newpath[i].coord[1]);
+      await sleep(20);
+    }
+  };
   search = async (grid, start) => {
     //run the bfs function search
     let ans = await bfs(grid, start, this.props.paint);
@@ -81,7 +94,8 @@ class Header extends React.Component {
           role='button'
           className={buttonStyle.startBtn}
           onClick={() => {
-            this.search(grid, start);
+            // this.search(grid, start);
+            this.searchDijstra(grid, start);
             return false;
           }}
           style={{ textDecoration: 'none' }}
@@ -120,6 +134,7 @@ class Header extends React.Component {
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav>
             {/* <Nav.Link href='#link'>Link</Nav.Link> */}
+            {/* <div className={headerStyle.text}>{this.state.algo}</div> */}
             <NavDropdown title={this.state.algo} id='basic-nav-dropdown'>
               <NavDropdown.Item
                 className={headerStyle.navitem}

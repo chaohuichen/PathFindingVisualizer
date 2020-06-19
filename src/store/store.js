@@ -2,20 +2,20 @@ import { createStore, applyMiddleware } from 'redux';
 import loggerMiddleware from 'redux-logger';
 import girdStyle from './Grid.module.css';
 
-let gird = new Array(20).fill([]);
+let gird = new Array(5).fill([]);
 for (let i = 0; i < gird.length; ++i) {
-  gird[i] = new Array(40).fill({ state: 'Empty', color: '' });
+  gird[i] = new Array(5).fill({ state: 'Empty', color: '', coord: [0, 0] });
   //set up the start point and end point
-  if (i === 11) {
-    gird[10][10] = { state: 'start', color: '', icon: 'fas fa-sun' };
-    gird[10][39] = { state: 'Goal', color: '', icon: 'fas fa-bullseye' };
+  if (i === 4) {
+    gird[0][0] = { state: 'start', color: '', icon: 'fas fa-sun' };
+    gird[4][4] = { state: 'Goal', color: '', icon: 'fas fa-bullseye' };
   }
 }
 
 const initialState = {
   grid: gird,
-  start: [10, 10],
-  end: [10, 39],
+  start: [0, 0],
+  end: [4, 4],
   prevStartCellState: 'Empty',
   prevStartCellColor: '',
   prevEndCellState: 'Empty',
@@ -67,7 +67,7 @@ function reducer(state = initialState, action) {
         ...newGrid[action.row][action.column],
       };
       if (newGrid[action.row][action.column].color === '') {
-        newGrid[action.row][action.column].state = 'Visited';
+        // newGrid[action.row][action.column].state = 'Visited';
         newGrid[action.row][action.column].color = girdStyle.visited;
       }
 
@@ -194,6 +194,6 @@ function reducer(state = initialState, action) {
   }
 }
 
-const store = createStore(reducer, applyMiddleware(loggerMiddleware));
+const store = createStore(reducer, applyMiddleware());
 
 export default store;
