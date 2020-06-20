@@ -159,3 +159,29 @@ var exploreInDirection = async function (
 
   return newLocation;
 };
+
+export const bfsAnimation = async (grid, start, paintFun, paintPathFun) => {
+  let ans = await bfs(grid, start, paintFun);
+
+  //north,south,west,east
+  let direction = {
+    North: [-1, 0],
+    South: [1, 0],
+    West: [0, -1],
+    East: [0, 1],
+  };
+
+  let startrow = start[0];
+  let startcol = start[1];
+  //draw the path after we have the direction from bfs function
+  for (let i = 0; i < ans.length; ++i) {
+    paintPathFun(startrow, startcol);
+    await sleep(20);
+    let dr = direction[ans[i]];
+    startrow += dr[0];
+    startcol += dr[1];
+  }
+  //draw the last cell
+  paintPathFun(startrow, startcol);
+  await sleep(20);
+};

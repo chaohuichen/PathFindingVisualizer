@@ -2,15 +2,33 @@ import { createStore, applyMiddleware } from 'redux';
 import loggerMiddleware from 'redux-logger';
 import girdStyle from './Grid.module.css';
 
-let gird = new Array(20).fill([]);
-for (let i = 0; i < gird.length; ++i) {
-  gird[i] = new Array(40).fill({ state: 'Empty', color: '', coord: [0, 0] });
-  //set up the start point and end point
-  if (i === 11) {
-    gird[10][10] = { state: 'start', color: '', icon: 'fas fa-sun' };
-    gird[10][39] = { state: 'Goal', color: '', icon: 'fas fa-bullseye' };
+const createNode = (row, col) => {
+  return {
+    col,
+    row,
+    distance: Infinity,
+    state: 'Empty',
+    previousNode: null,
+    icon: '',
+    color: '',
+    iconstyle: '',
+  };
+};
+
+let gird = [];
+for (let i = 0; i < 20; ++i) {
+  //current row
+  let row = [];
+  for (let j = 0; j < 40; ++j) {
+    row.push(createNode(i, j));
   }
+  gird.push(row);
 }
+//set up the init start & end
+gird[10][10].state = 'start';
+gird[10][10].icon = 'fas fa-sun';
+gird[10][39].state = 'Goal';
+gird[10][39].icon = 'fas fa-bullseye';
 
 const initialState = {
   grid: gird,

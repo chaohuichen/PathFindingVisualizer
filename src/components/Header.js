@@ -1,8 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { clear, colorize, paintPath, clearPath } from '../store/store';
-import { bfs } from './BFS';
-import { Dijstra,getNodesInShortestPathOrder } from './Dijstra';
+import { bfs, bfsAnimation } from './BFS';
+import {
+  Dijstra,
+  getNodesInShortestPathOrder,
+  DijstraAnimation,
+} from './Dijstra';
 import { sleep } from './ult';
 import headerStyle from './header.module.css';
 import buttonStyle from './button.module.scss';
@@ -16,45 +20,63 @@ class Header extends React.Component {
     };
   }
 
-  searchDijstra = async (grid, start) => {
-    let path =await  Dijstra(grid, start,this.props.paint);
-    const newpath = getNodesInShortestPathOrder(grid[10][13])
-    console.log("result",newpath )
-    for(let i =newpath.length-1;i>=0;--i){
-    
-      // console.log(path[i].coord[0],path[i].coord[1])
-      this.props.paintPath(newpath[i].coord[0],newpath[i].coord[1]);
+  startAnimation = async (grid, start, end) => {
+    switch (this.state.algo) {
+      case 'BreathFirstSearch':
+        await bfsAnimation(grid, start, this.props.paint, this.props.paintPath);
+        break;
+      case "Dijkstra's Algorithm":
+        await DijstraAnimation(
+          grid,
+          start,
+          end,
+          this.props.paint,
+          this.props.paintPath
+        );
+        break;
+      default:
+        break;
+    }
+  };
+  searchDijstra = async (grid, start, end) => {
+    let path = await Dijstra(grid, start, end, this.props.paint);
+    const newpath = getNodesInShortestPathOrder(grid[end[0]][end[1]]);
+
+    for (let i = 0; i < newpath.length; ++i) {
+      this.props.paintPath(newpath[i].coord[0], newpath[i].coord[1]);
       await sleep(20);
     }
   };
   search = async (grid, start) => {
+    await bfsAnimation(grid, start, this.props.paint, this.props.paintPath);
     //run the bfs function search
-    let ans = await bfs(grid, start, this.props.paint);
+    // let ans = await bfs(grid, start, this.props.paint);
 
-    //north,south,west,east
-    let direction = {
-      North: [-1, 0],
-      South: [1, 0],
-      West: [0, -1],
-      East: [0, 1],
-    };
+    // //north,south,west,east
+    // let direction = {
+    //   North: [-1, 0],
+    //   South: [1, 0],
+    //   West: [0, -1],
+    //   East: [0, 1],
+    // };
 
-    let startrow = start[0];
-    let startcol = start[1];
-    //draw the path after we have the direction from bfs function
-    for (let i = 0; i < ans.length; ++i) {
-      this.props.paintPath(startrow, startcol);
-      await sleep(20);
-      let dr = direction[ans[i]];
-      startrow += dr[0];
-      startcol += dr[1];
-    }
-    //draw the last cell
-    this.props.paintPath(startrow, startcol);
-    await sleep(20);
+    // let startrow = start[0];
+    // let startcol = start[1];
+    // //draw the path after we have the direction from bfs function
+    // for (let i = 0; i < ans.length; ++i) {
+    //   this.props.paintPath(startrow, startcol);
+    //   await sleep(20);
+    //   let dr = direction[ans[i]];
+    //   startrow += dr[0];
+    //   startcol += dr[1];
+    // }
+    // //draw the last cell
+    // this.props.paintPath(startrow, startcol);
+    // await sleep(20);
   };
   render() {
-    const { grid, start } = this.props;
+    const { grid, start, end } = this.props;
+
     return (
       // <div className={headerStyle.header}>
       //   <h3>PathFinding Visualizer</h3>
@@ -94,8 +116,8 @@ class Header extends React.Component {
           role='button'
           className={buttonStyle.startBtn}
           onClick={() => {
-            // this.search(grid, start);
-            this.searchDijstra(grid, start);
+            this.startAnimation(grid, start, end);
+            // this.searchDijstra(grid, start, end);
             return false;
           }}
           style={{ textDecoration: 'none' }}
