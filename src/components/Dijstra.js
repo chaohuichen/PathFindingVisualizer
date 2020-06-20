@@ -1,123 +1,29 @@
 import { sleep } from './ult';
 var Heap = require('collections/heap');
-const Dijstra1 = async function (grid, startCoordinates, callback) {
-  let size = grid.length;
-  var minHeap = new Heap(size, function (left, right) {
-    return left.distance - right.distance;
-  });
-
-  for (let i = 0; i < grid.length; ++i) {
-    for (let j = 0; j < grid[0].length; ++j) {
-      grid[i][j] = { ...grid[i][j] };
-      grid[i][j].coord = [i, j];
-      grid[i][j].distance = Infinity;
-    }
-  }
-
-  const [startRow, startCol] = startCoordinates;
-  grid[startRow][startCol] = { ...grid[startRow][startCol] };
-  grid[startRow][startCol].distance = 0;
-  console.log(grid);
-  // Horizontal and VerticalDistance
-  let hVDistance = 1;
-
-  // Diagonal Distance
-  let dDistance = 1.4;
-
-  /* for Manhattan Distances,
-  double horizontalVerticalDistance = 1.0;
-  double diagonalDistance = 2.0;
- 
-  for Chebyshev Distances,
-  double horizontalVerticalDistance = 1.0;
-  double diagonalDistance = 1.0; */
-  minHeap.push(grid[startRow][startCol]);
-
-  while (minHeap.length > 0) {
-    let curr = minHeap.pop();
-
-    console.log(curr);
-    //top
-    if (curr.coord[0] - 1 > 0) {
-      let t = { ...grid[curr.coord[0] - 1][curr.coord[1]] };
-
-      if (t.state === 'Empty' && t.distance > curr.distance + hVDistance) {
-        t.distance = curr.distance + hVDistance;
-        t.parent = curr;
-
-        minHeap.push(t);
-      }
-    }
-
-    // Left
-    if (curr.coord[1] - 1 > 0) {
-      let t = { ...grid[curr.coord[0]][curr.coord[1] - 1] };
-      if (t.state === 'Empty' && t.distance > curr.distance + hVDistance) {
-        t.distance = curr.distance + hVDistance;
-        t.parent = curr;
-        minHeap.push(t);
-      }
-    }
-    // Right
-    if (curr.coord[1] + 1 < size) {
-      let t = { ...grid[curr.coord[0]][curr.coord[1] + 1] };
-      if (t.state === 'Empty' && t.distance > curr.distance + hVDistance) {
-        t.distance = curr.distance + hVDistance;
-        t.parent = curr;
-        minHeap.push(t);
-      }
-    }
-    //down
-    if (curr.coord[0] + 1 < size) {
-      let t = { ...grid[curr.coord[0] + 1][curr.coord[1]] };
-      if (t.state === 'Empty' && t.distance > curr.distance + hVDistance) {
-        t.distance = curr.distance + hVDistance;
-        t.parent = curr;
-        minHeap.push(t);
-      }
-    }
-
-    curr.state = 'Visited';
-  }
-
-  //[10,39]
-  let path = [];
-  if (grid[4][4] !== Number.MAX_SAFE_INTEGER) {
-    let curr = grid[4][4];
-
-    while (curr.parent) {
-      path.push(curr.parent);
-      curr = curr.parent;
-    }
-  } else {
-    console.log('no path');
-  }
-
-  return path;
-};
 
 export const Dijstra = async (grid, startCoordinates, end, callback) => {
-  let size = grid.length;
-  for (let i = 0; i < grid.length; ++i) {
-    for (let j = 0; j < grid[0].length; ++j) {
-      grid[i][j] = { ...grid[i][j] };
-      grid[i][j].coord = [i, j];
-      grid[i][j].distance = Infinity;
-      if (i === startCoordinates[0] && j === startCoordinates[1]) {
-        grid[i][j] = { ...grid[i][j] };
-        grid[i][j].coord = [i, j];
-        grid[i][j].distance = 0;
-      }
-    }
-  }
-
+  // let size = grid.length;
+  // for (let i = 0; i < grid.length; ++i) {
+  //   for (let j = 0; j < grid[0].length; ++j) {
+  //     grid[i][j] = { ...grid[i][j] };
+  //     grid[i][j].coord = [i, j];
+  //     grid[i][j].distance = Infinity;
+  //     if (i === startCoordinates[0] && j === startCoordinates[1]) {
+  //       grid[i][j] = { ...grid[i][j] };
+  //       grid[i][j].coord = [i, j];
+  //       grid[i][j].distance = 0;
+  //     }
+  //   }
+  // }
+  const [startrow, startcol] = startCoordinates;
+  grid[startrow][startcol].distance = 0;
   const unvisitedNodes = getAllNodes(grid);
 
   const visitedNodesInOrder = [];
   while (!!unvisitedNodes.length) {
     sortNodesByDistance(unvisitedNodes);
     const closestNode = unvisitedNodes.shift();
-    callback(closestNode.coord[0], closestNode.coord[1]);
+    callback(closestNode.row, closestNode.col);
     await sleep(0);
     if (closestNode.state === 'Visited') continue;
 
@@ -133,7 +39,7 @@ export const Dijstra = async (grid, startCoordinates, end, callback) => {
 
 function getUnvisitedNeighbors(node, grid) {
   const neighbors = [];
-  const [row, col] = node.coord;
+  const { row, col } = node;
   if (row > 0) neighbors.push(grid[row - 1][col]);
   if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
   if (col > 0) neighbors.push(grid[row][col - 1]);
@@ -182,12 +88,11 @@ export async function DijstraAnimation(
   paintFun,
   paintPathFun
 ) {
-  console.log('in di');
   await Dijstra(grid, start, end, paintFun);
   const path = getNodesInShortestPathOrder(grid[end[0]][end[1]]);
 
   for (let i = 0; i < path.length; ++i) {
-    paintPathFun(path[i].coord[0], path[i].coord[1]);
+    paintPathFun(path[i].row, path[i].col);
     await sleep(20);
   }
 }
