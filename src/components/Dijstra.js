@@ -119,21 +119,21 @@ const Dijstra1 = async function (grid, startCoordinates, callback) {
 
 };
 
-export const Dijstra=(grid, startCoordinates, callback)=>{
+export const Dijstra=async (grid, startCoordinates, callback)=>{
     let size = grid.length;
     for (let i = 0; i < grid.length; ++i) {
         for (let j = 0; j < grid[0].length; ++j) {
           grid[i][j] = { ...grid[i][j] };
           grid[i][j].coord = [i, j];
           grid[i][j].distance = Infinity;
-          if(i===startCoordinates[0]&& j==startCoordinates[1]){
+          if(i===startCoordinates[0] && j==startCoordinates[1]){
             grid[i][j] = { ...grid[i][j] };
             grid[i][j].coord = [i, j];
             grid[i][j].distance = 0;
           }
         }
     }
-
+    console.log(startCoordinates)
     const unvisitedNodes = getAllNodes(grid);
 
     const visitedNodesInOrder = [];
@@ -141,14 +141,16 @@ export const Dijstra=(grid, startCoordinates, callback)=>{
  
         sortNodesByDistance(unvisitedNodes)
         const closestNode = unvisitedNodes.shift()
-      
-        if(closestNode.state==="Visited" ||closestNode.state==='Blocked') continue
+        callback(closestNode.coord[0],closestNode.coord[1])
+        await sleep(0)
+        if(closestNode.state==="Visited") continue
         
         if(closestNode.distance===Infinity) return visitedNodesInOrder
+       
         closestNode.state= "Visited"
         visitedNodesInOrder.push(closestNode)
-       
-        if(closestNode === grid[4][4]) return visitedNodesInOrder
+     
+        if(closestNode === grid[10][13]) return visitedNodesInOrder
         updateUnvisitedNeighbors(closestNode, grid);
     }
    
@@ -156,17 +158,18 @@ export const Dijstra=(grid, startCoordinates, callback)=>{
 
 function getUnvisitedNeighbors(node, grid) {
     const neighbors = [];
-    const [col, row] = node.coord;
+    const [row, col] = node.coord;
     if (row > 0) neighbors.push(grid[row - 1][col]);
     if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
-    if (col > 0) neighbors.push(grid[row][col - 1]);
-    if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
+    if (col> 0) neighbors.push(grid[row][col - 1]);
+    if (col< grid[0].length - 1) neighbors.push(grid[row][col + 1]);
+ 
     return neighbors.filter(neighbor => neighbor.state!=="Visited");
   }
 function updateUnvisitedNeighbors(node, grid) {
     const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
  
- 
+    // console.log("nei",unvisitedNeighbors)
     for (const neighbor of unvisitedNeighbors) {
       neighbor.distance = node.distance + 1;
       neighbor.previousNode = node;

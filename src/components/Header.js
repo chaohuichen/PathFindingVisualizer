@@ -18,7 +18,7 @@ class Header extends React.Component {
 
   searchDijstra = async (grid, start) => {
     let path =await  Dijstra(grid, start,this.props.paint);
-    const newpath = getNodesInShortestPathOrder(grid[4][4])
+    const newpath = getNodesInShortestPathOrder(grid[10][13])
     console.log("result",newpath )
     for(let i =newpath.length-1;i>=0;--i){
     
