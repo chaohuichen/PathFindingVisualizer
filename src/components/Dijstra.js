@@ -26,7 +26,7 @@ export const Dijstra = async (grid, startCoordinates, end, callback) => {
     callback(closestNode.row, closestNode.col);
     await sleep(0);
     if (closestNode.state === 'Visited') continue;
-
+    if (closestNode.state === 'Blocked') continue;
     if (closestNode.distance === Infinity) return visitedNodesInOrder;
 
     closestNode.state = 'Visited';
@@ -45,7 +45,9 @@ function getUnvisitedNeighbors(node, grid) {
   if (col > 0) neighbors.push(grid[row][col - 1]);
   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
 
-  return neighbors.filter((neighbor) => neighbor.state !== 'Visited');
+  return neighbors.filter(
+    (neighbor) => neighbor.state !== 'Visited' && neighbor.state !== 'Blocked'
+  );
 }
 function updateUnvisitedNeighbors(node, grid) {
   const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
@@ -92,6 +94,7 @@ export async function DijstraAnimation(
   const path = getNodesInShortestPathOrder(grid[end[0]][end[1]]);
 
   for (let i = 0; i < path.length; ++i) {
+    if (grid[path[i].row][path[i].col].state === 'Blocked') continue;
     paintPathFun(path[i].row, path[i].col);
     await sleep(20);
   }

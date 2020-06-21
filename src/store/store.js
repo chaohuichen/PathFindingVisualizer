@@ -73,7 +73,7 @@ function reducer(state = initialState, action) {
         wallGrid[action.row][action.column].state = 'Blocked';
         wallGrid[action.row][action.column].color = girdStyle.wall;
       } else if (wallGrid[action.row][action.column].state === 'Blocked') {
-        // wallGrid[action.row][action.column].state = 'Empty';
+        wallGrid[action.row][action.column].state = 'Empty';
         wallGrid[action.row][action.column].color = '';
       }
 
