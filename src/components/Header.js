@@ -46,7 +46,6 @@ class Header extends React.Component {
         );
         break;
       default:
-        console.log('hello');
         this.warning();
         break;
     }
@@ -135,7 +134,14 @@ class Header extends React.Component {
           <Nav>
             {/* <Nav.Link href='#link'>Link</Nav.Link> */}
             {/* <div className={headerStyle.text}>{this.state.algo}</div> */}
-            <NavDropdown title={this.state.algo} id='basic-nav-dropdown'>
+            <NavDropdown
+              title={
+                <span className={headerStyle.headertitle}>
+                  {this.state.algo}
+                </span>
+              }
+              id='basic-nav-dropdown'
+            >
               <NavDropdown.Item
                 className={headerStyle.navitem}
                 eventKey='BreathFirstSearch'
