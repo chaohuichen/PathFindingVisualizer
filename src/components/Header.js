@@ -1,17 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { clear, colorize, paintPath, clearPath } from '../store/store';
-import { bfs, bfsAnimation } from './BFS';
-import {
-  Dijstra,
-  getNodesInShortestPathOrder,
-  DijstraAnimation,
-} from './Dijstra';
-import { sleep } from './ult';
+import { bfsAnimation } from './BFS';
+import { DijstraAnimation } from './Dijstra';
+
 import headerStyle from './header.module.css';
 import buttonStyle from './button.module.scss';
 import { Navbar, NavDropdown, Nav } from 'react-bootstrap';
 
+import { store } from 'react-notifications-component';
 class Header extends React.Component {
   constructor() {
     super();
@@ -19,7 +16,21 @@ class Header extends React.Component {
       algo: 'Algorithms',
     };
   }
-
+  warning = () => {
+    store.addNotification({
+      title: 'No Algo selected',
+      message: 'Please Select an algorithm to run the visualizer',
+      type: 'danger',
+      container: 'top-left',
+      insert: 'top',
+      animationIn: ['animated', 'fadeIn'],
+      animationOut: ['animated', 'fadeOut'],
+      dismiss: {
+        duration: 2000,
+      },
+      width: 400,
+    });
+  };
   startAnimation = async (grid, start, end) => {
     switch (this.state.algo) {
       case 'BreathFirstSearch':
@@ -35,6 +46,8 @@ class Header extends React.Component {
         );
         break;
       default:
+        console.log('hello');
+        this.warning();
         break;
     }
   };
