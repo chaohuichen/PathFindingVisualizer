@@ -14,6 +14,7 @@ class Header extends React.Component {
     super();
     this.state = {
       algo: 'Algorithms',
+      startVisualize: false,
     };
   }
   warning = () => {
@@ -34,9 +35,11 @@ class Header extends React.Component {
   startAnimation = async (grid, start, end) => {
     switch (this.state.algo) {
       case 'BreathFirstSearch':
+        this.setState({ startVisualize: true });
         await bfsAnimation(grid, start, this.props.paint, this.props.paintPath);
         break;
       case "Dijkstra's Algorithm":
+        this.setState({ startVisualize: true });
         await DijstraAnimation(
           grid,
           start,
@@ -49,6 +52,7 @@ class Header extends React.Component {
         this.warning();
         break;
     }
+    this.setState({ startVisualize: false });
   };
 
   render() {
@@ -93,9 +97,9 @@ class Header extends React.Component {
           role='button'
           className={buttonStyle.startBtn}
           onClick={() => {
-            this.startAnimation(grid, start, end);
-
-            return false;
+            if (!this.state.startVisualize) {
+              this.startAnimation(grid, start, end);
+            }
           }}
           style={{ textDecoration: 'none' }}
         >
@@ -105,10 +109,14 @@ class Header extends React.Component {
           href='#clear'
           role='button'
           className={buttonStyle.endBtn}
-          onClick={this.props.clear}
+          onClick={() => {
+            if (!this.state.startVisualize) {
+              this.props.clear();
+            }
+          }}
           style={{ textDecoration: 'none' }}
         >
-          <p className={buttonStyle.buttonText} style={{ marginLeft: '14px' }}>
+          <p className={buttonStyle.buttonText} style={{ marginLeft: '12px' }}>
             Clear
           </p>
         </a>
@@ -117,14 +125,16 @@ class Header extends React.Component {
           role='button'
           className={buttonStyle.push}
           onClick={() => {
-            this.props.clearPath();
+            if (!this.state.startVisualize) {
+              this.props.clearPath();
+            }
             return false;
           }}
           style={{ textDecoration: 'none' }}
         >
           <p
             className={buttonStyle.buttonText}
-            style={{ marginLeft: '16px', marginTop: '10px' }}
+            style={{ marginLeft: '13px', marginTop: '8px' }}
           >
             Clear Path
           </p>
