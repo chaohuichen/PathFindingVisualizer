@@ -134,14 +134,7 @@ function reducer(state = initialState, action) {
         icon: 'fas fa-bullseye',
       };
       return {
-        ...state,
-        grid: clearGrid,
-        start: initialState.start,
-        end: initialState.end,
-        prevStartCellState: initialState.prevStartCellState,
-        prevStartCellColor: initialState.prevStartCellColor,
-        prevEndCellState: initialState.prevEndState,
-        prevEndCellColor: initialState.prevEndCellColor,
+        ...initialState,
       };
     case SET_START:
       const moveGrid = [...state.grid];
