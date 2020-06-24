@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { clear, colorize, paintPath, clearPath } from '../store/store';
 import { bfsAnimation } from './BFS';
 import { DijstraAnimation } from './Dijstra';
-
+import { dfs } from './DFS';
 import headerStyle from './header.module.css';
 import buttonStyle from './button.module.scss';
 import { Navbar, NavDropdown, Nav } from 'react-bootstrap';
@@ -33,26 +33,29 @@ class Header extends React.Component {
     });
   };
   startAnimation = async (grid, start, end) => {
-    switch (this.state.algo) {
-      case 'BreathFirstSearch':
-        this.setState({ startVisualize: true });
-        await bfsAnimation(grid, start, this.props.paint, this.props.paintPath);
-        break;
-      case "Dijkstra's Algorithm":
-        this.setState({ startVisualize: true });
-        await DijstraAnimation(
-          grid,
-          start,
-          end,
-          this.props.paint,
-          this.props.paintPath
-        );
-        break;
-      default:
-        this.warning();
-        break;
-    }
-    this.setState({ startVisualize: false });
+    await dfs(grid, start, end, this.props.paint);
+    // this.setState({ startVisualize: true });
+    // switch (this.state.algo) {
+    //   case 'BreathFirstSearch':
+    //     await bfsAnimation(grid, start, this.props.paint, this.props.paintPath);
+    //     break;
+    //   case "Dijkstra's Algorithm":
+    //     await DijstraAnimation(
+    //       grid,
+    //       start,
+    //       end,
+    //       this.props.paint,
+    //       this.props.paintPath
+    //     );
+    //     break;
+    //   case 'DepthFirstSearch':
+    //     await dfs(grid, start, this.props.paint);
+    //     break;
+    //   default:
+    //     this.warning();
+    //     break;
+    // }
+    // this.setState({ startVisualize: false });
   };
 
   render() {
